@@ -51,7 +51,8 @@
             var $this = $(el),
               $controlGroup = $this.parents(".control-group").first();
             if (
-              $controlGroup.hasClass("warning")
+              $controlGroup.hasClass("warning") ||
+              $controlGroup.hasClass("error")
             ) {
               $controlGroup.removeClass("warning").addClass("error");
               warningsFound++;
@@ -473,7 +474,11 @@
               errorsFound = $.unique(errorsFound);
 
               if (errorsFound.length) {
-                $controlGroup.removeClass("success error").addClass("warning");
+                if (settings.options.preventSubmit) {
+                  $controlGroup.removeClass("success warning").addClass("error");
+                } else {
+                  $controlGroup.removeClass("success error").addClass("warning");
+                }
                 $helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>");
               } else {
                 $controlGroup.removeClass("warning error success");
